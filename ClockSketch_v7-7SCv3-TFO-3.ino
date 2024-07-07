@@ -1,4 +1,5 @@
-/* -[ClockSketch v7.4]----------------------------------------------------------------------------------------
+/* 已经刷入六个数字的钟,每段三个灯88:88:88,共130个LED灯
+ *  -[ClockSketch v7.4]----------------------------------------------------------------------------------------
    https://www.instructables.com/ClockSketch-V7-Part-I/
    
    pre-configured for:
@@ -254,7 +255,7 @@ uint8_t brightness = brightnessLevels[0];                        // default brig
   #endif
   
   #define LED_PWR_LIMIT 500                                      // 500mA - Power limit in mA (voltage is set in setup() to 5v) 
-  #define LED_DIGITS 4                                           // 4 or 6 digits, HH:MM or HH:MM:SS
+  #define LED_DIGITS 6                                           // 4 or 6 digits, HH:MM or HH:MM:SS
   #define LED_COUNT 103                                          // Total number of leds, 103 on Retro 7 Segment Clock v3 - The Final One(s) - 3 LEDs/segment
   #if ( LED_DIGITS == 6 )
     #define LED_COUNT 157                                        // leds on the 6 digit version
@@ -286,7 +287,7 @@ digit positions, seen from the front:
 |_| |_| |_| |_| |_| |_|
 |_| |_| |_| |_| |_| |_|
 
- 0   1   2   3   4   5
+ 5   4   3   2   1   0
 
 Note: Digit positions for showSegments() depends on the order in which the segments
 are defined in segGroups[] below. Most of my things/clocks published so far start
@@ -323,78 +324,78 @@ digitsLAM -> LED_ACCESS_MODE per digit
 uint8_t digitsLAM[6] = { 1, 1, 1, 1, 1, 1 };
 
 #if ( LED_DIGITS == 4 )
-  const uint8_t digitPositions[4] = { 0, 1, 2, 3 };                 // positions of HH:MM (3, 0, 2, 1 on L7-QBE)
+  const uint8_t digitPositions[4] = { 3, 2, 1, 0 };                 // positions of HH:MM (3, 0, 2, 1 on L7-QBE)
   const uint16_t segGroups[28][2] PROGMEM = {
 #endif
 
 #if ( LED_DIGITS == 6 )
-  const uint8_t digitPositions[6] = { 0, 1, 2, 3, 4, 5 };           // positions of HH:MM:SS
+  const uint8_t digitPositions[6] = { 5, 4, 3, 2, 1, 0 };           // positions of HH:MM:SS
   const uint16_t segGroups[42][2] PROGMEM = {
 #endif
 
   /* segments 0-27, 4 digits x 7 segments */
   /* digit position 0 */
-  {   6,   8 },                   // top, a
-  {   3,   5 },                   // top right, b
-  {  20,  22 },                   // bottom right, c
-  {  17,  19 },                   // bottom, d
-  {  14,  16 },                   // bottom left, e
-  {   9,  11 },                   // top left, f
-  {   0,   2 },                   // center, g
+  {   3,   5 },                   // top, a
+  {   0,   2 },                   // top right, b
+  {  12,  14 },                   // bottom right, c
+  {  15,  17 },                   // bottom, d
+  {  18,  20 },                   // bottom left, e
+  {   6,   8 },                   // top left, f
+  {   9,  11 },                   // center, g
   /* digit position 1 */
-  {  40,  42 },                   // top, a
-  {  37,  39 },                   // top right, b
-  {  32,  34 },                   // bottom right, c
-  {  29,  31 },                   // bottom, d
-  {  26,  28 },                   // bottom left, e
-  {  43,  45 },                   // top left, f
-  {  46,  48 },                   // center, g
+  {  24,  26 },                   // top, a
+  {  21,  23 },                   // top right, b
+  {  33,  35 },                   // bottom right, c
+  {  36,  38 },                   // bottom, d
+  {  39,  41 },                   // bottom left, e
+  {  27,  29 },                   // top left, f
+  {  30,  32 },                   // center, g
   /* digit position 2 */
-  {  60,  62 },                   // top, a
-  {  57,  59 },                   // top right, b
-  {  74,  76 },                   // bottom right, c
-  {  71,  73 },                   // bottom, d
-  {  68,  70 },                   // bottom left, e
-  {  63,  65 },                   // top left, f
-  {  54,  56 },                   // center, g
+  {  47,  49 },                   // top, a
+  {  44,  46 },                   // top right, b
+  {  56,  58 },                   // bottom right, c
+  {  59,  61 },                   // bottom, d
+  {  62,  64 },                   // bottom left, e
+  {  50,  52 },                   // top left, f
+  {  53,  55 },                   // center, g
   /* digit position 3 */
-  {  94,  96 },                   // top, a
-  {  91,  93 },                   // top right, b
-  {  86,  88 },                   // bottom right, c
-  {  83,  85 },                   // bottom, d
-  {  80,  82 },                   // bottom left, e
-  {  97,  99 },                   // top left, f
-  { 100, 102 }                    // center, g
+  {  68,  70 },                   // top, a
+  {  65,  67 },                   // top right, b
+  {  77,  79 },                   // bottom right, c
+  {  80,  82 },                   // bottom, d
+  {  83,  85 },                   // bottom left, e
+  {  71,  73 },                   // top left, f
+  {  74,  76 }                    // center, g
 #if ( LED_DIGITS == 6 )           // add two digits, 14 segments, only used if LED_DIGITS is 6...
   /* segments 28-41, 6 digits x 7 segments */
   /* (bogus on some models which don't support 6 digits) */
   /* digit position 4 */
- ,{ 114, 116 },                   // top, a      !! do not remove the "," at the start of this line !!
-  { 111, 113 },                   // top right, b
-  { 128, 130 },                   // bottom right, c
-  { 125, 127 },                   // bottom, d
-  { 122, 124 },                   // bottom left, e
-  { 117, 119 },                   // top left, f
-  { 108, 110 },                   // center, g
+ ,{ 91, 93 },                   // top, a      !! do not remove the "," at the start of this line !!
+  { 88, 90 },                   // top right, b
+  { 100, 102 },                   // bottom right, c
+  { 103, 105 },                   // bottom, d
+  { 106, 108 },                   // bottom left, e
+  { 94, 96 },                   // top left, f
+  { 97, 99 },                   // center, g
   /* digit position 5 */
-  { 148, 150 },                   // top, a
-  { 145, 147 },                   // top right, b
-  { 140, 142 },                   // bottom right, c
-  { 137, 139 },                   // bottom, d
-  { 134, 136 },                   // bottom left, e
-  { 151, 153 },                   // top left, f
-  { 154, 156 }                    // center, g
+  { 112, 114 },                   // top, a
+  { 109, 111 },                   // top right, b
+  { 121, 123 },                   // bottom right, c
+  { 124, 126 },                   // bottom, d
+  { 127, 129 },                   // bottom left, e
+  { 115, 117 },                   // top left, f
+  { 118, 120 }                    // center, g
 #endif                            // ...end of digits 5+6
 };
 
 #if ( LED_DIGITS == 4 )
-  const uint16_t upperDots[2] PROGMEM = {  49,  50 };              // leds inside the upper dots (right on L7-QBE)
-  const uint16_t lowerDots[2] PROGMEM = {  52,  53 };              // leds inside the lower dots (left on L7-QBE)
+  const uint16_t upperDots[2] PROGMEM = {  42,  43 };              // leds inside the upper dots (right on L7-QBE)
+  const uint16_t lowerDots[2] PROGMEM = {  86,  87 };              // leds inside the lower dots (left on L7-QBE)
 #endif
 
 #if ( LED_DIGITS == 6 )
-  const uint16_t upperDots[4] PROGMEM = {  49,  50, 103, 104 };     // all the leds inside the upper dots (bogus values on some models which don't support 6 digits)
-  const uint16_t lowerDots[4] PROGMEM = {  52,  53, 106, 107 };     // all the leds inside the lower dots (bogus values on some models which don't support 6 digits)
+  const uint16_t upperDots[4] PROGMEM = {  42,  86 };     // all the leds inside the upper dots (bogus values on some models which don't support 6 digits)
+  const uint16_t lowerDots[4] PROGMEM = {  43,  87 };     // all the leds inside the lower dots (bogus values on some models which don't support 6 digits)
 #endif
 
 // Using above arrays it's very easy to "talk" to the segments. Simply use 0-6 for the first 7 segments, add 7 (7-13) for the second one, 14-20 for third....
